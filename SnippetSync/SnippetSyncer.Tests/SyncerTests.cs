@@ -54,5 +54,19 @@ namespace SnippetSyncer.Tests
             DateTime localFileTimestamp = syncer.GetTimestampFromLocalFile(FolderPath);
             Assert.That(localFileTimestamp, Is.EqualTo(testTimestamp));
         }
+
+        [Test]
+        public void ClearFolder_Removes_All_Files_From_A_Folder()
+        {
+            File.WriteAllText(Path.Join(FolderPath, Path.GetRandomFileName()), "test");
+            File.WriteAllText(Path.Join(FolderPath, Path.GetRandomFileName()), "test");
+            File.WriteAllText(Path.Join(FolderPath, Path.GetRandomFileName()), "test");
+
+            SnippetSyncer syncer = new SnippetSyncer();
+
+            syncer.ClearFolder(FolderPath);
+
+            Assert.That(Directory.GetFiles(FolderPath).Length, Is.EqualTo(0));
+        }
     }
 }

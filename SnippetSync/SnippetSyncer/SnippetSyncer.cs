@@ -46,6 +46,16 @@ namespace SnippetSyncer
             return updateFile.LastUpdated;
         }
 
-        // ClearFolder(string folderPath)
+        public void ClearFolder(string folderPath)
+        {
+            DirectoryInfo info = new DirectoryInfo(folderPath);
+
+            FileInfo[] files = info.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                file.Delete();
+            }
+        }
     }
 }
