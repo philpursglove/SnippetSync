@@ -17,22 +17,22 @@ namespace SnippetSyncer.Tests
         {
             FolderPath = Path.Join(Path.GetTempPath(), "SnippetSync");
             FilePath = Path.Join(FolderPath, "SnippetSync.json");
-        }
 
-        [Test]
-        public void SaveTimestampFile_Saves_File()
-        {
             if (File.Exists(FilePath))
             {
                 File.Delete(FilePath);
             }
 
-            SnippetSyncer syncer = new SnippetSyncer();
-
             if (!Directory.Exists(FolderPath))
             {
                 Directory.CreateDirectory(FolderPath);
             }
+        }
+
+        [Test]
+        public void SaveTimestampFile_Saves_File()
+        {
+            SnippetSyncer syncer = new SnippetSyncer();
 
             LocalUpdateFile updateFile = new LocalUpdateFile { LastUpdated = DateTime.Now };
 
