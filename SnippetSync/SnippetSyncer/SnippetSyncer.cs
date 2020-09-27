@@ -28,10 +28,8 @@ namespace SnippetSyncer
 
         // DownloadFile(string fileDownloadUrl)
 
-        public void SaveTimestampFile(string folderPath)
+        public void SaveTimestampFile(string folderPath, LocalUpdateFile updateFile)
         {
-            LocalUpdateFile updateFile = new LocalUpdateFile { LastUpdated = DateTime.Now };
-
             string updateJson = JsonSerializer.Serialize<LocalUpdateFile>(updateFile);
             string filePath = Path.Join(folderPath, "SnippetSync.json");
             File.WriteAllText(filePath, updateJson);
@@ -39,7 +37,14 @@ namespace SnippetSyncer
 
         // GetRepoLastUpdateTime(string repoUrl)
 
-        // GetTimestampFromLocalFile
+        public DateTime GetTimestampFromLocalFile(string folderPath)
+        {
+            string filePath = Path.Join(folderPath, "SnippetSync.json");
+            string updateJson = File.ReadAllText(filePath);
+            LocalUpdateFile updateFile = JsonSerializer.Deserialize<LocalUpdateFile>(updateJson);
+
+            return updateFile.LastUpdated;
+        }
 
         // ClearFolder(string folderPath)
     }
