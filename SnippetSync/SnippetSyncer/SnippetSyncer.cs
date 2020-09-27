@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.Json;
 
 namespace SnippetSyncer
 {
@@ -26,7 +28,14 @@ namespace SnippetSyncer
 
         // DownloadFile(string fileDownloadUrl)
 
-        // SaveTimestampFile
+        public void SaveTimestampFile(string folderPath)
+        {
+            LocalUpdateFile updateFile = new LocalUpdateFile { LastUpdated = DateTime.Now };
+
+            string updateJson = JsonSerializer.Serialize<LocalUpdateFile>(updateFile);
+            string filePath = Path.Join(folderPath, "SnippetSync.json");
+            File.WriteAllText(filePath, updateJson);
+        }
 
         // GetRepoLastUpdateTime(string repoUrl)
 
