@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 
 namespace SnippetSyncer
@@ -12,7 +13,7 @@ namespace SnippetSyncer
         // {
         //      DateTime localFileTimestamp = GetTimeStampFromLocalFile(folderPath)
         //      DateTime repoTimestamp = GetRepoLastUpdateTime(repoUrl)
-        //      
+        //
         //      if repoTimestamp > localFIleTimeStamp
         //      {
         //          ClearFolder(folderPath)
@@ -27,6 +28,7 @@ namespace SnippetSyncer
         // GetFilesListFromRepo(repoUrl)
 
         // DownloadFile(string fileDownloadUrl)
+
 
         public void SaveTimestampFile(string folderPath, LocalUpdateFile updateFile)
         {
@@ -57,5 +59,19 @@ namespace SnippetSyncer
                 file.Delete();
             }
         }
+
+        public void DownloadFile(GithubFile file, string folderPath)
+        {
+            WebClient client = new WebClient();
+            client.DownloadFile(file.DownloadUrl, Path.Join(folderPath, file.Filename));
+        }
+    }
+
+    public class GithubFile
+    {
+
+        public string DownloadUrl { get; set; }
+
+        public string Filename { get; set; }
     }
 }

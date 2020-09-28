@@ -68,5 +68,14 @@ namespace SnippetSyncer.Tests
 
             Assert.That(Directory.GetFiles(FolderPath).Length, Is.EqualTo(0));
         }
+
+        [Test]
+        public void File_Is_Downloaded()
+        {
+            SnippetSyncer syncer = new SnippetSyncer();
+            GithubFile file = new GithubFile() { Filename = "StringProperty.snippet", DownloadUrl = "https://raw.githubusercontent.com/philpursglove/CSharpSnippets/master/StringProperty.snippet" };
+            syncer.DownloadFile(file, FolderPath);
+            Assert.That(File.Exists(Path.Join(FolderPath, "StringProperty.snippet")));
+        }
     }
 }
