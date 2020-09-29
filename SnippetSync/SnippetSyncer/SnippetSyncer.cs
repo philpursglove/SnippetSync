@@ -27,8 +27,6 @@ namespace SnippetSyncer
 
         // GetFilesListFromRepo(repoUrl)
 
-        // DownloadFile(string fileDownloadUrl)
-
 
         public void SaveTimestampFile(string folderPath, LocalUpdateFile updateFile)
         {
@@ -65,13 +63,5 @@ namespace SnippetSyncer
             WebClient client = new WebClient();
             client.DownloadFile(file.DownloadUrl, Path.Join(folderPath, file.Filename));
         }
-    }
-
-    public class GithubFile
-    {
-
-        public string DownloadUrl { get; set; }
-
-        public string Filename { get; set; }
     }
 }
