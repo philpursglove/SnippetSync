@@ -26,7 +26,7 @@ namespace SnippetSyncer.Tests
         {
             _httpTest.RespondWithJson(new { updated_at = "2020-05-07T12:00Z" });
 
-            Repository repo = new Repository("https://github.com/philpursglove/CSharpSnippets");
+            Repository repo = new Repository("https://github.com/testuser/TestRepoName");
 
             Assert.That(repo.LastUpdated, Is.EqualTo(new DateTime(2020, 5, 7, 12, 0, 0)));
         }
