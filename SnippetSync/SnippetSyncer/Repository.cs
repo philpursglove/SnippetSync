@@ -14,24 +14,20 @@ namespace SnippetSyncer
             HttpUrl = httpUrl;
         }
 
-        private string ApiUrl
+        private string ApiUrl()
         {
-            get
-            {
-                string httpUrl = HttpUrl.ToLowerInvariant();
-                httpUrl = httpUrl.Replace("https://github.com/", string.Empty);
-                httpUrl = httpUrl.Replace("http://github.com/", string.Empty);
+            string httpUrl = HttpUrl.ToLowerInvariant();
+            httpUrl = httpUrl.Replace("https://github.com/", string.Empty);
+            httpUrl = httpUrl.Replace("http://github.com/", string.Empty);
 
-                return $"https://api.github.com/repos/{httpUrl}";
-            }
-            set { }
+            return $"https://api.github.com/repos/{httpUrl}";
         }
 
         public DateTime LastUpdated
         {
             get
             {
-                GithubRepository githubRepo = ApiUrl.GetJsonAsync<GithubRepository>().Result;
+                GithubRepository githubRepo = ApiUrl().GetJsonAsync<GithubRepository>().Result;
                 return githubRepo.updated_at;
             }
             private set { }
@@ -39,7 +35,7 @@ namespace SnippetSyncer
 
         public List<GithubFile> GetFilesListFromRepo()
         {
-            var files = ApiUrl.AppendPathSegment("/contents").GetJsonListAsync().Result;
+            var files = new Url(ApiUrl()).AppendPathSegment("/contents").GetJsonListAsync().Result;
 
             List<GithubFile> githubFiles = new List<GithubFile>();
 
