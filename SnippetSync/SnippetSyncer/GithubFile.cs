@@ -2,9 +2,8 @@
 {
     public class GithubFile
     {
+        public string download_url { get; set; }
 
-        public string DownloadUrl { get; set; }
-
-        public string Filename { get; set; }
+        public string name { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace SnippetSyncer
         public void DownloadFile(GithubFile file, string folderPath)
         {
             WebClient client = new WebClient();
-            client.DownloadFile(file.DownloadUrl, Path.Join(folderPath, file.Filename));
+            client.DownloadFile(file.download_url, Path.Join(folderPath, file.name));
         }
     }
 }
