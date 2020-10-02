@@ -23,29 +23,25 @@ namespace SnippetSyncer
             return $"https://api.github.com/repos/{httpUrl}";
         }
 
-        public DateTime LastUpdated
+        public DateTime LastUpdated()
         {
-            get
-            {
-                GithubRepository githubRepo = ApiUrl().GetJsonAsync<GithubRepository>().Result;
-                return githubRepo.updated_at;
-            }
-            private set { }
+            GithubRepository githubRepo = ApiUrl().GetJsonAsync<GithubRepository>().Result;
+            return githubRepo.updated_at;
         }
 
-        public List<GithubFile> GetFilesListFromRepo()
+    public List<GithubFile> GetFilesListFromRepo()
+    {
+        var files = new Url(ApiUrl()).AppendPathSegment("/contents").GetJsonListAsync().Result;
+
+        List<GithubFile> githubFiles = new List<GithubFile>();
+
+        for (int i = 0; i < files.Count; i++)
         {
-            var files = new Url(ApiUrl()).AppendPathSegment("/contents").GetJsonListAsync().Result;
-
-            List<GithubFile> githubFiles = new List<GithubFile>();
-
-            for (int i = 0; i < files.Count; i++)
-            {
-                dynamic apifile = files[i];
-                githubFiles.Add(new GithubFile { name = apifile.name, download_url = apifile.download_url });
-            }
-
-            return githubFiles;
+            dynamic apifile = files[i];
+            githubFiles.Add(new GithubFile { name = apifile.name, download_url = apifile.download_url });
         }
+
+        return githubFiles;
     }
+}
 }
