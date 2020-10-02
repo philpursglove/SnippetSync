@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.Json;
@@ -9,24 +10,24 @@ namespace SnippetSyncer
     {
         // SyncSnippets
 
-        // SyncSnippetFolder(string folderPath, string RepoUrl)
-        // {
-        //      DateTime localFileTimestamp = GetTimeStampFromLocalFile(folderPath)
-        //      DateTime repoTimestamp = GetRepoLastUpdateTime(repoUrl)
-        //
-        //      if repoTimestamp > localFIleTimeStamp
-        //      {
-        //          ClearFolder(folderPath)
-        //          List<GithubFile> repoFiles = GetFilesListFromRepo
-        //          foreach file in repoFiles
-        //          {
-        //              DownloadFIle(file)
-        //          }
-        //      }
-        // }
+        public void SyncSnippetFolder(string folderPath, string RepoUrl)
+        {
+            DateTime localFileTimestamp = GetTimestampFromLocalFile(folderPath);
 
-        // GetFilesListFromRepo(repoUrl)
+            Repository repo = new Repository(RepoUrl);
 
+            DateTime repoTimestamp = repo.LastUpdated();
+
+            if (repoTimestamp > localFileTimestamp)
+            {
+                ClearFolder(folderPath);
+                List<GithubFile> repoFiles = repo.GetFilesListFromRepo();
+                foreach (GithubFile file in repoFiles)
+                {
+                    DownloadFile(file, folderPath);
+                }
+            }
+        }
 
         public void SaveTimestampFile(string folderPath, LocalUpdateFile updateFile)
         {
@@ -35,11 +36,14 @@ namespace SnippetSyncer
             File.WriteAllText(filePath, updateJson);
         }
 
-        // GetRepoLastUpdateTime(string repoUrl)
-
         public DateTime GetTimestampFromLocalFile(string folderPath)
         {
             string filePath = Path.Join(folderPath, "SnippetSync.json");
+
+            if (!File.Exists(filePath))
+            {
+                return DateTime.MinValue;
+            }
             string updateJson = File.ReadAllText(filePath);
             LocalUpdateFile updateFile = JsonSerializer.Deserialize<LocalUpdateFile>(updateJson);
 
