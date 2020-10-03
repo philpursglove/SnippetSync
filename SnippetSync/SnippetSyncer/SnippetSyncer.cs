@@ -12,6 +12,11 @@ namespace SnippetSyncer
 
         public void SyncSnippetFolder(string folderPath, string RepoUrl)
         {
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
             DateTime localFileTimestamp = GetTimestampFromLocalFile(folderPath);
 
             Repository repo = new Repository(RepoUrl);
