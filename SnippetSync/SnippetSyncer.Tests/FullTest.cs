@@ -11,7 +11,7 @@ namespace SnippetSyncer.Tests
         public void End_To_End_Test()
         {
             SnippetSyncer syncer = new SnippetSyncer();
-            string path = @"C:\Temp\SnippetSync";
+            string path = Path.Join(Path.GetTempPath(), "SnippetSync");
             string url = "https://github.com/philpursglove/CSharpSnippets";
 
             syncer.SyncSnippetFolder(path, url);
