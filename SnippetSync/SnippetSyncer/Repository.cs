@@ -25,13 +25,19 @@ namespace SnippetSyncer
 
         public DateTime LastUpdated()
         {
-            GithubRepository githubRepo = ApiUrl().GetJsonAsync<GithubRepository>().Result;
+            GithubRepository githubRepo = ApiUrl()
+                .WithBasicAuth(Environment.UserName, string.Empty)
+                .WithHeader("User-Agent", "SnippetSync")
+                .GetJsonAsync<GithubRepository>().Result;
             return githubRepo.updated_at;
         }
 
     public List<GithubFile> GetFilesListFromRepo()
     {
-        var files = new Url(ApiUrl()).AppendPathSegment("/contents").GetJsonListAsync().Result;
+        var files = new Url(ApiUrl()).AppendPathSegment("/contents")
+                .WithBasicAuth(Environment.UserName, string.Empty)
+                .WithHeader("User-Agent", "SnippetSync")
+                .GetJsonListAsync().Result;
 
         List<GithubFile> githubFiles = new List<GithubFile>();
 
