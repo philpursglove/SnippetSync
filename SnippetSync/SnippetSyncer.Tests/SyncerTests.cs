@@ -2,15 +2,13 @@ using NUnit.Framework;
 using System.IO;
 using SnippetSyncer;
 using System;
+using Flurl.Http.Testing;
 
 namespace SnippetSyncer.Tests
 {
     public class SyncerTests
     {
-
-        public string FolderPath { get; set; }
-
-        public string FilePath { get; set; }
+        HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
@@ -27,7 +25,19 @@ namespace SnippetSyncer.Tests
             {
                 Directory.CreateDirectory(FolderPath);
             }
+
+            _httpTest = new HttpTest();
         }
+
+        [TearDown]
+        public void Teardown()
+        {
+            _httpTest.Dispose();
+        }
+
+        public string FolderPath { get; set; }
+
+        public string FilePath { get; set; }
 
         [Test]
         public void SaveTimestampFile_Saves_File()
@@ -77,5 +87,6 @@ namespace SnippetSyncer.Tests
             syncer.DownloadFile(file, FolderPath);
             Assert.That(File.Exists(Path.Join(FolderPath, "StringProperty.snippet")));
         }
+
     }
 }
