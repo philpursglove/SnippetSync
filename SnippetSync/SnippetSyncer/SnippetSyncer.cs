@@ -26,6 +26,8 @@ namespace SnippetSyncer
                 {
                     DownloadFile(file, folderPath);
                 }
+                LocalUpdateFile updateFile = new LocalUpdateFile { LastUpdated = DateTime.Now };
+                SaveTimestampFile(folderPath, updateFile);
             }
         }
 
