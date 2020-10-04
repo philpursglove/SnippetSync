@@ -3,6 +3,7 @@ using System;
 using Flurl.Http.Testing;
 using System.Text.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SnippetSyncer.Tests
 {
@@ -34,14 +35,14 @@ namespace SnippetSyncer.Tests
         }
 
         [Test]
-        public void Repo_Returns_Files_List()
+        public async Task Repo_Returns_Files_List()
         {
             _httpTest.RespondWithJson(new List<GithubFile> { new GithubFile { name = "Test1.snippet", download_url = "https://raw.githubusercontent.com/testuser/TestRepoName/master/Test1.snippet"},
                new GithubFile { name = "Test2.snippet", download_url = "https://raw.githubusercontent.com/testuser/TestRepoName/master/Test2.snippet"}});
 
             Repository repo = new Repository("https://github.com/testuser/TestRepoName");
 
-            List<GithubFile> repoFiles = repo.GetFilesListFromRepo();
+            List<GithubFile> repoFiles = await repo.GetFilesListFromRepo();
 
             Assert.That(repoFiles.Count, Is.EqualTo(2));
         }

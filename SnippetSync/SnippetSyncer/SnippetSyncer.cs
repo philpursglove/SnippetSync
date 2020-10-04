@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SnippetSyncer
 {
@@ -10,7 +11,7 @@ namespace SnippetSyncer
     {
         // SyncSnippets
 
-        public void SyncSnippetFolder(string folderPath, string RepoUrl)
+        public async Task SyncSnippetFolder(string folderPath, string RepoUrl)
         {
             if (!Directory.Exists(folderPath))
             {
@@ -21,15 +22,15 @@ namespace SnippetSyncer
 
             Repository repo = new Repository(RepoUrl);
 
-            DateTime repoTimestamp = repo.LastUpdated();
+            DateTime repoTimestamp = await repo.LastUpdated();
 
             if (repoTimestamp > localFileTimestamp)
             {
                 ClearFolder(folderPath);
-                List<GithubFile> repoFiles = repo.GetFilesListFromRepo();
+                List<GithubFile> repoFiles = await repo.GetFilesListFromRepo();
                 foreach (GithubFile file in repoFiles)
                 {
-                    DownloadFile(file, folderPath);
+                    await DownloadFile(file, folderPath);
                 }
                 LocalUpdateFile updateFile = new LocalUpdateFile { LastUpdated = DateTime.Now };
                 SaveTimestampFile(folderPath, updateFile);
@@ -69,10 +70,10 @@ namespace SnippetSyncer
             }
         }
 
-        public void DownloadFile(GithubFile file, string folderPath)
+        public async Task DownloadFile(GithubFile file, string folderPath)
         {
             WebClient client = new WebClient();
-            client.DownloadFile(file.download_url, Path.Join(folderPath, file.name));
+            client.DownloadFileAsync(new Uri(file.download_url), Path.Join(folderPath, file.name));
         }
     }
 }

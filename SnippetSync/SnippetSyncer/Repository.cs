@@ -2,6 +2,7 @@
 using Flurl.Http;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SnippetSyncer
 {
@@ -23,31 +24,31 @@ namespace SnippetSyncer
             return $"https://api.github.com/repos/{httpUrl}";
         }
 
-        public DateTime LastUpdated()
+        public async Task<DateTime> LastUpdated()
         {
-            GithubRepository githubRepo = ApiUrl()
+            GithubRepository githubRepo = await ApiUrl()
                 .WithBasicAuth(Environment.UserName, string.Empty)
                 .WithHeader("User-Agent", "SnippetSync")
-                .GetJsonAsync<GithubRepository>().Result;
+                .GetJsonAsync<GithubRepository>();
             return githubRepo.updated_at;
         }
 
-    public List<GithubFile> GetFilesListFromRepo()
-    {
-        var files = new Url(ApiUrl()).AppendPathSegment("/contents")
-                .WithBasicAuth(Environment.UserName, string.Empty)
-                .WithHeader("User-Agent", "SnippetSync")
-                .GetJsonListAsync().Result;
-
-        List<GithubFile> githubFiles = new List<GithubFile>();
-
-        for (int i = 0; i < files.Count; i++)
+        public async Task<List<GithubFile>> GetFilesListFromRepo()
         {
-            dynamic apifile = files[i];
-            githubFiles.Add(new GithubFile { name = apifile.name, download_url = apifile.download_url });
-        }
+            var files = await new Url(ApiUrl()).AppendPathSegment("/contents")
+                    .WithBasicAuth(Environment.UserName, string.Empty)
+                    .WithHeader("User-Agent", "SnippetSync")
+                    .GetJsonListAsync();
 
-        return githubFiles;
+            List<GithubFile> githubFiles = new List<GithubFile>();
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                dynamic apifile = files[i];
+                githubFiles.Add(new GithubFile { name = apifile.name, download_url = apifile.download_url });
+            }
+
+            return githubFiles;
+        }
     }
-}
 }
