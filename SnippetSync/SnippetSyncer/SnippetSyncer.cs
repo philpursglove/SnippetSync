@@ -73,7 +73,7 @@ namespace SnippetSyncer
         public async Task DownloadFile(GithubFile file, string folderPath)
         {
             WebClient client = new WebClient();
-            client.DownloadFileAsync(new Uri(file.download_url), Path.Join(folderPath, file.name));
+            await client.DownloadFileTaskAsync(new Uri(file.download_url), Path.Join(folderPath, file.name));
         }
     }
 }
