@@ -2,7 +2,7 @@
 
 namespace SnippetSync
 {
-    public interface AsyncSnippetSyncService
+    public interface IAsyncSnippetSyncService
     {
         Task SyncSnippets();
     }

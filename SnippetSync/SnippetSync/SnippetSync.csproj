@@ -45,10 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AsyncSnippetSyncService.cs" />
+    <Compile Include="IAsyncSnippetSyncService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnippetSyncPackage.cs" />
-    <Compile Include="SnippetSyncService.cs" />
+    <Compile Include="ISnippetSyncService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">

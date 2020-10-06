@@ -1,6 +1,6 @@
 ﻿namespace SnippetSync
 {
-    public interface SnippetSyncService
+    public interface ISnippetSyncService
     {
 
     }
