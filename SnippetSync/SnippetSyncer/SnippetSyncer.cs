@@ -40,13 +40,13 @@ namespace SnippetSyncer
         public void SaveTimestampFile(string folderPath, LocalUpdateFile updateFile)
         {
             string updateJson = JsonSerializer.Serialize<LocalUpdateFile>(updateFile);
-            string filePath = Path.Join(folderPath, "SnippetSync.json");
+            string filePath = Path.Combine(folderPath, "SnippetSync.json");
             File.WriteAllText(filePath, updateJson);
         }
 
         public DateTime GetTimestampFromLocalFile(string folderPath)
         {
-            string filePath = Path.Join(folderPath, "SnippetSync.json");
+            string filePath = Path.Combine(folderPath, "SnippetSync.json");
 
             if (!File.Exists(filePath))
             {
@@ -73,7 +73,7 @@ namespace SnippetSyncer
         public async Task DownloadFile(GithubFile file, string folderPath)
         {
             WebClient client = new WebClient();
-            await client.DownloadFileTaskAsync(new Uri(file.download_url), Path.Join(folderPath, file.name));
+            await client.DownloadFileTaskAsync(new Uri(file.download_url), Path.Combine(folderPath, file.name));
         }
     }
 }

@@ -14,8 +14,8 @@ namespace SnippetSyncer.Tests
         [SetUp]
         public void Setup()
         {
-            FolderPath = Path.Join(Path.GetTempPath(), "SnippetSync");
-            FilePath = Path.Join(FolderPath, "SnippetSync.json");
+            FolderPath = Path.Combine(Path.GetTempPath(), "SnippetSync");
+            FilePath = Path.Combine(FolderPath, "SnippetSync.json");
 
             if (File.Exists(FilePath))
             {
@@ -69,9 +69,9 @@ namespace SnippetSyncer.Tests
         [Test]
         public void ClearFolder_Removes_All_Files_From_A_Folder()
         {
-            File.WriteAllText(Path.Join(FolderPath, Path.GetRandomFileName()), "test");
-            File.WriteAllText(Path.Join(FolderPath, Path.GetRandomFileName()), "test");
-            File.WriteAllText(Path.Join(FolderPath, Path.GetRandomFileName()), "test");
+            File.WriteAllText(Path.Combine(FolderPath, Path.GetRandomFileName()), "test");
+            File.WriteAllText(Path.Combine(FolderPath, Path.GetRandomFileName()), "test");
+            File.WriteAllText(Path.Combine(FolderPath, Path.GetRandomFileName()), "test");
 
             SnippetSyncer syncer = new SnippetSyncer();
 
@@ -86,7 +86,7 @@ namespace SnippetSyncer.Tests
             SnippetSyncer syncer = new SnippetSyncer();
             GithubFile file = new GithubFile() { name = "StringProperty.snippet", download_url = "https://raw.githubusercontent.com/philpursglove/CSharpSnippets/master/StringProperty.snippet" };
             await syncer.DownloadFile(file, FolderPath);
-            Assert.That(File.Exists(Path.Join(FolderPath, "StringProperty.snippet")));
+            Assert.That(File.Exists(Path.Combine(FolderPath, "StringProperty.snippet")));
         }
 
     }
